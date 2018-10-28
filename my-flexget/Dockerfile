@@ -1,4 +1,4 @@
-FROM anthonyguerreiro/u-flexget:0.1
+FROM anthonyguerreiro/u-flexget:0.1.1
 
 ARG anime_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/my-flexget/init/anime.yml
 ARG secrets_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/my-flexget/init/secrets.yml

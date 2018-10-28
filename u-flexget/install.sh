@@ -10,7 +10,6 @@ export LC_ALL=en_US.UTF-8
 apt-get install -y \
         python3 \
         python3-pip \
-        deluge-common \
         python3-libtorrent \
         build-essential python3-dev libyaml-dev libpython3-dev && \
         python3 -m pip install --upgrade pip==18.1
