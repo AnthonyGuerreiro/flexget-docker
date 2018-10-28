@@ -1,0 +1,6 @@
+tasks:  
+  mytask:
+    magnets: yes
+    convert_magnet:
+      timeout: 10 seconds
+      force: yes
