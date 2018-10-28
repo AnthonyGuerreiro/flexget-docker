@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   flexget:
-    #image: anthonyguerreiro/flexget:0.1
-    build: .
+    image: anthonyguerreiro/my-flexget
     depends_on:
       - transmission
     environment:
