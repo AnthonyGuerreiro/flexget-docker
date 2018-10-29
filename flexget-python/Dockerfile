@@ -19,7 +19,7 @@ ADD https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/plu
 ADD https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/plugins/myanimelist.py plugins/myanimelist.py
 ADD https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/plugins/rawlist.py plugins/rawlist.py
 
-RUN apk add --no-cache py-pip && \
+RUN apk add --no-cache findutils py-pip && \
     python -m pip install --upgrade pip==18.1 && \
     pip install flexget==2.11.21 \
                 transmissionrpc==0.11 \
