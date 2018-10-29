@@ -2,7 +2,8 @@ version: "3.7"
 
 services:
   flexget:
-    image: anthonyguerreiro/my-flexget
+    #image: anthonyguerreiro/flexget-python
+    image: anthonyguerreiro/flexget-python3
     depends_on:
       - transmission
     environment:
