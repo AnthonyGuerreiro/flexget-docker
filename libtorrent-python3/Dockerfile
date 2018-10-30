@@ -33,12 +33,12 @@ RUN \
     --enable-silent-rules && \
   make && \
   make install-strip && \
-  strip /usr/lib/python3.6/site-packages/libtorrent.cpython-36m-x86_64-linux-gnu.so && \
+  strip /usr/lib/python3.6/site-packages/libtorrent.cpython*.so && \
   cd /opt && \
   rm -rf libtorrent-rasterbar-${LIBTORRENT_VERSION} && \
   apk del .build_libtorrent && \
   apk add --no-cache --virtual .runtime_libtorrent \
     boost-python3 boost-system libgcc libstdc++ python3 && \
-ldconfig /usr/lib && \
-ln -s /usr/bin/python3 /usr/bin/python && \
-ln -s /usr/bin/pip3 /usr/bin/pip
+  ldconfig /usr/lib && \
+  if [ -f /usr/bin/python ] ; then rm /usr/bin/python; fi && ln -s /usr/bin/python3 /usr/bin/python && \
+  if [ -f /usr/bin/pip ] ; then rm /usr/bin/pip; fi && ln -s /usr/bin/pip3 /usr/bin/pip
