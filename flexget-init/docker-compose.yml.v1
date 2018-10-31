@@ -12,7 +12,7 @@ flexget:
   links:
     - transmission:transmission
 transmission:
-  image: robsharp/rpi-transmission
+  image: anthonyguerreiro/rpi-transmission
   ports:
     - 9091:9091
     - 51413:51413
@@ -20,4 +20,3 @@ transmission:
   volumes:
     - ${download_folder}:/downloads
   restart: unless-stopped
-  command: transmission-daemon -c /watch -w /downloads -f -t -a *.*.*.*,transmission -u transmission_user -v transmission_pw
