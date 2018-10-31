@@ -16,7 +16,7 @@ The [config.yml](u-flexget/config.yml) provided in **u-flexget** serves as base 
 **flexget-python3** uses my [configuration](https://github.com/AnthonyGuerreiro/flexget_config), heavily based on [Jonybat's](https://github.com/Jonybat/flexget_config) and is pre-populated with:
 - anime.yml (example file with one entry)
 - secrets.yml (example file, values are replaced by *ENV variables*)
-- flexget_config_script.sh (setup system and replace *ENV variables* in secrets.yml)
+- entrypoint.sh (setup system and replace *ENV variables* in secrets.yml)
 - db-config.sqlite (empty)
 
 The image can be build with any other configuration preloaded or a pre-populated flexget database by passing the build args to the *Dockerfile*, such as:
@@ -24,12 +24,12 @@ The image can be build with any other configuration preloaded or a pre-populated
 ```
 docker build -t myimage --build-arg anime_yml_file=path/to/anime.yml \
                         --build-arg secrets_yml_file=path/to/secrets.yml \
-                        --build-arg flexget_config_script=path/to/flexget_config_script.sh \
+                        --build-arg flexget_config_script=path/to/entrypoint.sh \
                         --build-arg flexget_db=path/to/db-config.sqlite \
                         --build-arg config_yml_file=path/to/config.yml .
 ```
 
-The [Flexget config script](utils/defaults/flexget_config_script.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup. This file can, too, be completely modified for your needs if you change the config.
+The [Flexget config script](utils/defaults/entrypoint.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup. This file can, too, be completely modified for your needs if you change the config.
 
 ### runtime
 The *ENV variables* are required to run this flexget configuration:
