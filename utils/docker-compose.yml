@@ -14,7 +14,7 @@ services:
       - ${download_folder}:/downloads
     restart: unless-stopped
   transmission:
-    image: linuxserver/transmission
+    image: linuxserver/transmission:148
     ports:
       - 9091:9091
       - 51413:51413
