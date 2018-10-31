@@ -21,6 +21,6 @@ services:
       - 51413:51413/udp
     volumes:
       - ${download_folder}:/downloads
-      - ${transmission_config_folder}:/config
-      - ${transmission_watch_folder}:/watch
     restart: unless-stopped
+    entrypoint: transmission-daemon
+    command: -c /watch -w /downloads -f -t -a *.*.*.*,transmission -u transmission_user -v transmission_pw
