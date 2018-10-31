@@ -1,25 +1,32 @@
 # Contents
-This repository contains two Docker images:
-- [u-flexget](https://hub.docker.com/r/anthonyguerreiro/u-flexget/)  - Simple Flexget installation in ubuntu.
-- [flexget-python3](https://hub.docker.com/r/anthonyguerreiro/flexget-python3/) - My [Flexget configuration](https://github.com/AnthonyGuerreiro/flexget_config) (image based on **u-flexget**)
+This repository contains the following Docker images:
+- [libtorrent-python](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python/) - libtorrent python bindings using Alpine as base image.
+- [libtorrent-python3](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python3/) - libtorrent python3 bindings using Alpine as base image.
+- [flexget-python](https://hub.docker.com/r/anthonyguerreiro/flexget-python/) - Flexget running on python with my [configuration](https://github.com/AnthonyGuerreiro/flexget_config), using **libtorrent-python** as base image.
+- [flexget-python3](https://hub.docker.com/r/anthonyguerreiro/flexget-python3/) - Flexget running on python3 with my [configuration](https://github.com/AnthonyGuerreiro/flexget_config), using **libtorrent-python3** as base image.
+- [rpi-transmission](https://hub.docker.com/r/anthonyguerreiro/rpi-transmission/) - Transmission 2.8+ for the Raspberry Pi.
+- [docker-compose](utils/docker-compose) files ready to run *flexget-python* and *transmission* images.
+- [default](utils/defaults) files used to build **flexget-python** and **flexget-python3** images.
 
-Both images are 277MB, **flexget-python3** adds only a few configuration files to **u-flexget**
+My Flexget configuration is heavily based on [Jonybat's](https://github.com/Jonybat/flexget_config).
 
-## u-flexget
-The Flexget configuration requires python libtorrent bindings that are not up to date in newer implementations and I could only get it to work properly on ubuntu.
+All *libtorrent-python* and *flexget-python* images have a version to run on armv7l architecture, tagged with **armv7l**.
 
-The [config.yml](u-flexget/config.yml) provided in **u-flexget** serves as base example to ensure python-libtorrent is working properly. This image should be improved or changed to use other distros, ideally Alpine or one of the python3 or flexget docker images. Any suggestion/PR is appreciated!
+*libtorrent-python:armv7l* and *libtorrent-python3:armv7l* were built, and the python bindings compiled on a Raspberry Pi Model 3B.
 
-## flexget-python3
+*flexget-python:armv7l* and *flexget-python3:arm7l* were built on a x86. I don't know why but, when compiling them on the Rasperry Pi they would not work on the Raspberry Pi itself (as if wrong architecture). They were tested and work on the Raspberry Pi.
+
+## flexget-python
 
 ### build
-**flexget-python3** uses my [configuration](https://github.com/AnthonyGuerreiro/flexget_config), heavily based on [Jonybat's](https://github.com/Jonybat/flexget_config) and is pre-populated with:
-- anime.yml (example file with one entry)
-- secrets.yml (example file, values are replaced by *ENV variables*)
-- entrypoint.sh (setup system and replace *ENV variables* in secrets.yml)
-- db-config.sqlite (empty)
+**flexget-python** and **flexget-python3** images are pre-populated with:
+- [anime.yml](utils/defaults/anime.yml) (example file with one entry)
+- [secrets.yml](utils/defaults/secrets.yml) (example file, values are replaced by *ENV variables*)
+- [entrypoint.sh](utils/defaults/entrypoint.sh) (script to replace *ENV variables* in secrets.yml (first run) and startup the container)
+- [db-config.sqlite](utils/defaults/db-config.sqlite) (empty *Flexget* database)
+- [config.yml](https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/config.yml) (My *Flexget* configuration)
 
-The image can be build with any other configuration preloaded or a pre-populated flexget database by passing the build args to the *Dockerfile*, such as:
+The image can be built with any other configuration preloaded or a pre-populated flexget database by passing the build args to the *Dockerfile*, such as:
 
 ```
 docker build -t myimage --build-arg anime_yml_file=path/to/anime.yml \
@@ -29,7 +36,7 @@ docker build -t myimage --build-arg anime_yml_file=path/to/anime.yml \
                         --build-arg config_yml_file=path/to/config.yml .
 ```
 
-The [Flexget config script](utils/defaults/entrypoint.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup. This file can, too, be completely modified for your needs if you change the config.
+The [entrypoint](utils/defaults/entrypoint.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup.
 
 ### runtime
 The *ENV variables* are required to run this flexget configuration:
@@ -37,40 +44,44 @@ The *ENV variables* are required to run this flexget configuration:
 - mal_user (to fetch anime)
 - pushbullet_token (pushbullet api key obtained from [pushbullet](https://www.pushbullet.com/#settings/account) to notify downloads)
 
+It's also recommended to map a volume to the container /downloads folder to be able to access the downloads directly from the host.
+
 ##### Running the container
 Example:
 
-`docker run --rm -e trakt_user=myuser -e mal_user=myotheruser -e pushbullet_token=myapikey -d anthonyguerreiro/flexget-python3`
+`docker run --rm -v /tmp:/downloads -e trakt_user=myuser -e mal_user=myotheruser -e pushbullet_token=myapikey -it anthonyguerreiro/flexget-python3 /bin/sh`
 
-After starting it in daemon mode, check logs (or start in interactive mode) to check flexget message requesting access to your trakt account:
+After starting the container for the first time, check logs (or start in interactive mode) to view flexget message requesting access to your trakt account:
 ```
 Accessing trakt for authentication token..
 Please visit https://trakt.tv/activate and authorize Flexget. Your user code is 4CD47ACE. Your code expires in 10.0 minutes.
 ```
 
-Once that is setup, flexget daemon will start and it's ready to go.
-Keep in mind after an abrupt shutdown of the container it may be necessary to `rm /.flexget/.config-lock` for the daemon to be able to start.
+Once Flexget receives the authorization, *Flexget daemon* will be started.
 
 
 
 ## docker-compose
-A [docker-compose](flexget/docker-compose.yml) file is provided to run **flexget-python3** alongside a container running transmission. **docker-compose** passes all *ENV variables* provided to it to **flexget-python3**. It also requires a few other *ENV variables* for transmission and to map a common volume to both images:
-- download_folder: The transmission download folder. Also used by **flexget-python3**
-- transmission_config_folder: The transmission configuration folder
-- transmission_watch_folder: The transmission watch folder
+The [docker-compose](utils/docker-compose) files provided start either **flexget-python** or **flexget-python3** container alongside a container running transmission.
+
+The [v3.7](utils/docker-compose/docker-compose.yml) one is a standalone, but the [v1](utils/docker-compose/docker-compose.yml.v1) is provided with a [script](utils/docker-compose/docker-compose-v1.sh) to run it easier, because docker-compose v1 does not support variable substitution.
+
+Both assume the *ENV variables* mentioned in [runtime](#runtime) and an extra *ENV variable* **download_folder** to map the downloads folder between *flexget-python*, *transmission* and the host.
 
 ##### docker-compose env variables
-The easiest way to pass variables to **docker-compose** is to have a `.env` file in the same directory.
-The [.env-example](myflexget/.env-example) is provided, and should be edited with the proper values and renamed to `.env`.
+The easiest way to provide *ENV variables* to docker-compose is to have a `.env` file in the same directory when running docker-compose.
+
+The script provided to run docker-compose v1 assumes this file exists.
+
+An [example](utils/docker-compose/.env-example) is provided as to what the `.env` file is supposed to look like.
 
 ## transmission settings
-The [settings.json](flexget/settings.json) is the configuration file for transmission. The transmission container should be stopped before changing it, as transmission overrides this file when it closes. The only difference between the file I provide and the default generated by transmission is `"rpc-host-whitelist": "transmission"`. This entry is required to allow **flexget-python3** container to access transmission's.
+The default settings use the default transmission ports: 9091 for the web interface and 51413 for DHT (?).
 
-This can be edited prior to launching the container, already having a configuration in `transmission_config_folder`, or after launching the container so it creates the default configuration (container needs to be stopped to edit it as mentioned above)
-
-Also, transmission by default uses port 51413 and it should be open on your network.
-**docker-compose** ensures the that port is mapped to the same one in the host machine.
+If authentication is required to access the web interface, the default username is *transmission_user* and the default password is *transmission_pw*.
 
 ## Special thanks
-- Thanks to [Jonybat](https://github.com/Jonybat) for his [Flexget Config](https://github.com/Jonybat/flexget_config) and all the time he sank to tweak it
-- Thanks to [Jim Myhrberg](https://github.com/jimeh) for providing the base docker [image](https://github.com/jimeh/docker-flexget) with a working python-binding
+- The [Flexget community](https://flexget.com/) for creating and continuously improving [Flexget](https://github.com/Flexget/Flexget).
+- [Jonybat](https://github.com/Jonybat) for his [Flexget Config](https://github.com/Jonybat/flexget_config) and all the time he sank to tweak it.
+- [Sinaptika.net](https://github.com/git-sinaptika) for the base Alpine docker [image](https://github.com/git-sinaptika/libtorrent) with a working libtorrent python binding.
+- [Jim Myhrberg](https://github.com/jimeh) for the base Ubuntu docker [image](https://github.com/jimeh/docker-flexget) with a working libtorrent python binding (used on a previous version, before I could compile these on Alpine).
