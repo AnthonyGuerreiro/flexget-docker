@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ ! -f /setup-complete ]; then
   if [ -z ${trakt_user} ]; then
     echo "trakt_user is not set"
