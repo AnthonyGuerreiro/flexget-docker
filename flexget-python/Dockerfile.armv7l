@@ -1,9 +1,9 @@
 FROM anthonyguerreiro/libtorrent-python:armv7l
 
-ARG anime_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/flexget-init/init/anime.yml
-ARG secrets_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/flexget-init/init/secrets.yml
-ARG flexget_config_script=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/flexget-init/init/flexget_config_script.sh
-ARG flexget_db=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/flexget-init/init/db-config.sqlite
+ARG anime_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/utils/init/anime.yml
+ARG secrets_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/utils/init/secrets.yml
+ARG flexget_config_script=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/utils/init/flexget_config_script.sh
+ARG flexget_db=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget-docker/master/utils/init/db-config.sqlite
 ARG config_yml_file=https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/config.yml
 
 WORKDIR /.flexget

@@ -29,7 +29,7 @@ docker build -t myimage --build-arg anime_yml_file=path/to/anime.yml \
                         --build-arg config_yml_file=path/to/config.yml .
 ```
 
-The [Flexget config script](flexget-init/init/flexget_config_script.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup. This file can, too, be completely modified for your needs if you change the config.
+The [Flexget config script](utils/init/flexget_config_script.sh) uses the *ENV variables* provided in runtime to finish the configuration by replacing them in **secrets.yml**. It also builds up the folder structure used by my configuration and requests a [trakt](https://trakt.tv/) authentication token on startup. This file can, too, be completely modified for your needs if you change the config.
 
 ### runtime
 The *ENV variables* are required to run this flexget configuration:
