@@ -13,7 +13,7 @@ ADD ${anime_yml_file} anime.yml
 ADD ${secrets_yml_file} secrets.yml
 ADD ${config_yml_file} config.yml
 
-ADD ${flexget_config_script} /scripts/entrypoint.sh
+ADD ${flexget_config_script} /entrypoint.sh
 
 ADD https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/plugins/log_filter.py plugins/log_filter.py
 ADD https://raw.githubusercontent.com/AnthonyGuerreiro/flexget_config/master/plugins/myanimelist.py plugins/myanimelist.py
@@ -24,8 +24,8 @@ RUN apk add --no-cache findutils py-pip && \
     pip install flexget==2.11.21 \
                 transmissionrpc==0.11 \
                 subliminal==2.0.5 && \
-    chmod +x /scripts/entrypoint.sh
+    chmod +x /entrypoint.sh
 
 VOLUME ["/downloads"]
 
-ENTRYPOINT ["sh", "/scripts/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
