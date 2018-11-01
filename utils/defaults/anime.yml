@@ -1,8 +1,0 @@
-series:
-  settings:
-    onepiece:
-      quality: 720p !10bit !h265
-  onepiece:
-    - One Piece:
-        from_group: HorribleSubs
-        begin: 860
