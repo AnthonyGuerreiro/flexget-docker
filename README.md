@@ -10,6 +10,7 @@ This repository contains the following Docker images:
 *flexget-python* and *flexget-python3* were built on a x86 both for x86 and for armv7l.
 These images provide no configuration for Flexget but are a starting point with the following installed:
 - Python
+- Pip
 - Flexget
 - libtorrent python bindings
 
