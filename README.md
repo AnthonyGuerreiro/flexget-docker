@@ -1,11 +1,11 @@
 # Contents
 This repository contains the following Docker images:
-- [libtorrent-python](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python/) - libtorrent python bindings using Alpine as base image.
-- [libtorrent-python3](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python3/) - libtorrent python3 bindings using Alpine as base image.
-- [flexget-python](https://hub.docker.com/r/anthonyguerreiro/flexget-python/) - Flexget running on python using **libtorrent-python** as base image.
-- [flexget-python3](https://hub.docker.com/r/anthonyguerreiro/flexget-python3/) - Flexget running on python3 using **libtorrent-python3** as base image.
+- [libtorrent-python](libtorrent-python/) - libtorrent python bindings using Alpine as base image.
+- [libtorrent-python3](libtorrent-python3/) - libtorrent python3 bindings using Alpine as base image.
+- [flexget-python](flexget-python/) - Flexget running on python using **libtorrent-python** as base image.
+- [flexget-python3](flexget-python3/) - Flexget running on python3 using **libtorrent-python3** as base image.
 
-*[libtorrent-python](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python/tags/)* and *[libtorrent-python3](https://hub.docker.com/r/anthonyguerreiro/libtorrent-python3/tags/)* were built for x86 and armv7l (Raspberry Pi Model 3B).
+*libtorrent-python* and *libtorrent-python3* were built for x86 and armv7l (Raspberry Pi Model 3B).
 
 *flexget-python* and *flexget-python3* were built on a x86 both for x86 and for armv7l.
 These images provide no configuration for Flexget but are a starting point with the following installed:
